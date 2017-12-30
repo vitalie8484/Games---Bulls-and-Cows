@@ -1,13 +1,28 @@
+#pragma once
 #include "FBullCowGame.h"
 #include <map>
-#define TMap std::map
 
-FBullCowGame::FBullCowGame() { Reset(); }
+// to make syntax Unreal friendly
+#define TMap std::map 
+using int32 = int;
 
-int32 FBullCowGame::GetMaxTries() const { return MyMaxTries; }
+FBullCowGame::FBullCowGame() { Reset(); } // default constructor
+
 int32 FBullCowGame::GetCurrentTry() const { return MyCurrentTry; }
 int32 FBullCowGame::GetHiddenWordLength() const { return MyHiddenWord.length(); }
 bool FBullCowGame::IsGameWon() const { return bGameIsWon; }
+int32 FBullCowGame::GetMaxTries() const 
+{
+	TMap<int32, int32> WordLengthToMaxTries 
+	{
+		{ 3, 4 },
+		{ 4, 7 },	
+		{ 5, 10 },
+		{ 6, 16 },
+		{ 7, 20 }
+	};
+	return WordLengthToMaxTries[MyHiddenWord.length()]; 
+}
 
 EGuessStatus FBullCowGame::CheckGuessValidity(FString Guess) const
 {
@@ -32,12 +47,11 @@ EGuessStatus FBullCowGame::CheckGuessValidity(FString Guess) const
 		return EGuessStatus::OK;
 	}
 }
+
 void FBullCowGame::Reset()
 {
-	constexpr int32 MAX_TRIES = 8;
-	const FString HIDDEN_WORD = "planet";
-
-	MyMaxTries = MAX_TRIES;	
+	const FString HIDDEN_WORD = "planet"; // this MUST be an isogram
+	
 	MyHiddenWord = HIDDEN_WORD;
 	MyCurrentTry = 1;
 	bGameIsWon = false;

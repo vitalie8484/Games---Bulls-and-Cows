@@ -1,10 +1,15 @@
+/*
+	The game logic (no biew code or direct user interaction)
+	The game is a simple guess the word game based on Mastermind
+*/
+
 #pragma once
 #include <string>
 
+// to make syntax Unreal friendly
 using FString = std::string;
 using int32 = int;
 
-// all values initialized to zero
 struct FBullCowCount
 {
 	int32 Bulls = 0;
@@ -31,7 +36,7 @@ public:
 	bool IsGameWon() const;
 	EGuessStatus CheckGuessValidity(FString) const;
 
-	void Reset(); // TODO make a more rich return value
+	void Reset();
 
 	// counts bulls & cows, and increases try #. Assuming valid guess
 	FBullCowCount SubmitValidGuess(FString);
@@ -40,7 +45,6 @@ public:
 private:
 	// see constructor for initialisation
 	int32 MyCurrentTry;
-	int32 MyMaxTries;
 	FString MyHiddenWord;
 	bool bGameIsWon;
 
